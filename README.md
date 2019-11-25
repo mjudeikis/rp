@@ -81,7 +81,7 @@
 1. Load the application key/certificate into the key vault:
 
    ```
-   AZURE_KEY_FILE=aro-team-shared.pem
+   AZURE_KEY_FILE=secrets/aro-team-shared.pem
 
    az keyvault certificate import --vault-name "$KEYVAULT_NAME" --name azure --file "$AZURE_KEY_FILE"
    ```
