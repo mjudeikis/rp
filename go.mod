@@ -1,0 +1,93 @@
+module github.com/jim-minter/rp
+
+go 1.12
+
+require (
+	cloud.google.com/go v0.49.0
+	github.com/Azure/azure-sdk-for-go v36.2.0+incompatible
+	github.com/Azure/go-autorest v13.3.0+incompatible
+	github.com/BurntSushi/toml v0.3.1
+	github.com/PuerkitoBio/purell v1.1.1
+	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
+	github.com/ajeddeloh/go-json v0.0.0-20170920214419-6a2fe990e083
+	github.com/apparentlymart/go-cidr v1.0.1
+	github.com/aws/aws-sdk-go v1.25.39
+	github.com/containers/image v2.0.1+incompatible
+	github.com/coreos/go-semver v0.3.0
+	github.com/coreos/go-systemd v0.0.0-20191111152658-2d78030078ef
+	github.com/coreos/ignition v0.26.0
+	github.com/davecgh/go-spew v1.1.1
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/dimchansky/utfbom v1.1.0
+	github.com/emicklei/go-restful v2.11.1+incompatible
+	github.com/ghodss/yaml v1.0.0
+	github.com/go-openapi/jsonpointer v0.19.3
+	github.com/go-openapi/jsonreference v0.19.3
+	github.com/go-openapi/spec v0.19.4
+	github.com/go-openapi/swag v0.19.5
+	github.com/gogo/protobuf v1.3.1
+	github.com/golang/groupcache v0.0.0-20191027212112-611e8accdfc9
+	github.com/golang/protobuf v1.3.2
+	github.com/google/gofuzz v1.0.0
+	github.com/google/uuid v1.1.1
+	github.com/googleapis/gnostic v0.3.1
+	github.com/gophercloud/gophercloud v0.0.0-20191119155533-bee62241ad2c
+	github.com/gophercloud/utils v0.0.0-20191115025210-6e51b8944d05
+	github.com/gorilla/mux v1.7.3
+	github.com/imdario/mergo v0.3.8
+	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af
+	github.com/json-iterator/go v1.1.8
+	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
+	github.com/konsorten/go-windows-terminal-sequences v1.0.2
+	github.com/kubernetes/apimachinery v0.0.0-20191121015412-41065c7a8c2a
+	github.com/libvirt/libvirt-go v4.10.0+incompatible
+	github.com/mailru/easyjson v0.7.0
+	github.com/mattn/go-colorable v0.1.4
+	github.com/mattn/go-isatty v0.0.10
+	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b
+	github.com/mitchellh/go-homedir v1.1.0
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742
+	github.com/opencontainers/go-digest v1.0.0-rc1
+	github.com/opencontainers/image-spec v1.0.1
+	github.com/openshift/api v0.0.0-20191119170142-082f8e2a947e
+	github.com/openshift/client-go v0.0.0-20191022152013-2823239d2298
+	github.com/openshift/cloud-credential-operator v0.0.0-20191119195036-475436e11a88
+	github.com/openshift/cluster-api v0.0.0-20191030113141-9a3a7bbe9258
+	github.com/openshift/cluster-api-provider-gcp v0.0.0-20191113112939-537d68ec0751
+	github.com/openshift/cluster-api-provider-libvirt v0.0.0-20191106170909-c32e2ea813cf
+	github.com/openshift/machine-config-operator v0.0.0-20191121080256-ea51a9f88458
+	github.com/pborman/uuid v0.0.0-20180906182336-adf5a7427709
+	github.com/pkg/errors v0.8.1
+	github.com/satori/go.uuid v1.2.0
+	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749
+	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
+	github.com/sirupsen/logrus v1.4.2
+	github.com/spf13/pflag v1.0.5
+	github.com/ugorji/go v1.1.7
+	github.com/vincent-petithory/dataurl v0.0.0-20191104211930-d1553a71de50
+	go.opencensus.io v0.22.2
+	go4.org v0.0.0-20191010144846-132d2879e1e9
+	golang.org/x/crypto v0.0.0-20191119213627-4f8c1d86b1ba
+	golang.org/x/net v0.0.0-20191119073136-fc4aabc6c914
+	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
+	golang.org/x/sys v0.0.0-20191120155948-bd437916bb0e
+	golang.org/x/text v0.3.2
+	golang.org/x/time v0.0.0-20191024005414-555d28b269f0
+	golang.org/x/tools v0.0.0-20191121040551-947d4aa89328
+	google.golang.org/api v0.3.2
+	google.golang.org/appengine v1.6.5
+	google.golang.org/genproto v0.0.0-20191115221424-83cc0476cb11
+	google.golang.org/grpc v1.25.1
+	gopkg.in/AlecAivazis/survey.v1 v1.8.7
+	gopkg.in/inf.v0 v0.9.1
+	gopkg.in/ini.v1 v1.51.0
+	gopkg.in/yaml.v2 v2.2.7
+	k8s.io/klog v1.0.0
+	k8s.io/kube-openapi v0.0.0-20191107075043-30be4d16710a
+	k8s.io/utils v0.0.0-20190801114015-581e00157fb1
+	sigs.k8s.io/controller-runtime v0.2.2
+	sigs.k8s.io/yaml v1.1.0
+)
+
+replace github.com/kubernetes/apimachinery => github.com/kubernetes/apimachinery v0.0.0-20191121015412-41065c7a8c2a
