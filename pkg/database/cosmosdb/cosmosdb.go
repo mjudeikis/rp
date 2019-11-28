@@ -1,3 +1,4 @@
+//go:generate go get github.com/jim-minter/go-cosmosdb/cmd/gencosmosdb
 //go:generate go run github.com/jim-minter/go-cosmosdb/cmd/gencosmosdb github.com/jim-minter/rp/pkg/api,OpenShiftClusterDocument
 
 package cosmosdb
