@@ -2,7 +2,35 @@
 
 This document explains how to generate SDK version
 
-## GoLang
+## Dev SDK build
+
+1. Generate new api swagger spec
+    ```
+    export APIVERSION=v20191231preview
+    go run ./hack/swagger/swagger.go -i=$APIVERSION -o pkg/api/${APIVERSION}/swagger.json
+    ```
+
+1. Create required folder sturcture with example in `rest-api-spec`
+
+    ```
+    mkdir -p rest-api-spec/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/preview/2019-12-31-preview
+    # copy generated swagger spec
+    cp pkg/api/${APIVERSION}/swagger.json rest-api-spec/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/preview/2019-12-31-preview/redhatopenshift.json
+    ```
+
+1. Update all `readme` files files as they are used to generate SDK
+
+1. Generate dev SDK
+
+    ```
+    podman run --privileged -it -v $GOPATH:/go --entrypoint autorest \
+    azuresdk/autorest /go/src/github.com/jim-minter/rp/rest-api-spec/redhatopenshift/resource-manager/readme.md \
+    --go --go-sdks-folder=/go/src/github.com/jim-minter/rp/pkg/sdk/ --multiapi \
+    --use=@microsoft.azure/autorest.go@~2.1.137 --use-onever --verbose
+
+    ```
+
+## Upstream GoLang build
 
 1. Clone `azure-rest-api-spec` and azure-sdk-for-go git repositories
 
@@ -16,7 +44,7 @@ This document explains how to generate SDK version
     ```
     podman run --privileged -it -v $GOPATH:/go --entrypoint autorest \
     azuresdk/autorest /go/src/github.com/Azure/azure-rest-api-specs-pr/specification/redhatopenshift/resource-manager/readme.md \
-    --go --go-sdk-folder=/go/src/github.com/Azure/azure-sdk-for-go/ --multiapi \
+    --go --go-sdks-folder=/go/src/github.com/Azure/azure-sdk-for-go/ --multiapi \
     --use=@microsoft.azure/autorest.go@~2.1.137 --use-onever --verbose
     ```
 
