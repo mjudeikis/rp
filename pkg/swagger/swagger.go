@@ -83,6 +83,7 @@ func Run(outputFile, shortVersion string) error {
 			OperationID: "OpenShiftClusters_GetCredentials",
 			Parameters:  populateParameters(3, "OpenShiftCluster", "OpenShift cluster"),
 			Responses:   populateResponses("OpenShiftClusterCredentials", false, http.StatusOK),
+			Examples:    populateExamples("OpenShiftClusters_GetCredentials", "Get credentials of a OpenShift cluster"),
 		},
 	}
 
@@ -94,7 +95,7 @@ func Run(outputFile, shortVersion string) error {
 			OperationID: "Operations_List",
 			Parameters:  populateParameters(0, "Operation", "Operation"),
 			Responses:   populateResponses("OperationList", false, http.StatusOK),
-			Examples:    populateExamples("Operations_List", "Lists all of the available RP operations."),
+			Examples:    populateExamples("Operations_List", "List RP operations"),
 		},
 	}
 

@@ -44,7 +44,7 @@
           }
         },
         "x-ms-examples": {
-          "Lists all of the available RP operations.": {
+          "List RP operations": {
             "$ref": "./examples/Operations_List.json"
           }
         }
@@ -404,6 +404,11 @@
             "schema": {
               "$ref": "#/definitions/CloudError"
             }
+          }
+        },
+        "x-ms-examples": {
+          "Get credentials of a OpenShift cluster": {
+            "$ref": "./examples/OpenShiftClusters_GetCredentials.json"
           }
         }
       }
