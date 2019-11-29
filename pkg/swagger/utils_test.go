@@ -14,24 +14,24 @@ func TestValidateVersion(t *testing.T) {
 		input     string
 	}{
 		{
-			name:      "corrent preview version",
+			name:      "correct preview version",
 			expectErr: nil,
-			input:     "2019-02-11-preview",
+			input:     "v20190211preview",
 		},
 		{
 			name:      "correct ga version",
 			expectErr: nil,
-			input:     "2019-02-11",
-		},
-		{
-			name:      "wrong short version",
-			expectErr: fmt.Errorf("wrong version format v20190211"),
 			input:     "v20190211",
 		},
 		{
+			name:      "wrong short version",
+			expectErr: fmt.Errorf("wrong version format 2019-02-11"),
+			input:     "2019-02-11",
+		},
+		{
 			name:      "wrong long version",
-			expectErr: fmt.Errorf("wrong version format 20190211-preview"),
-			input:     "20190211-preview",
+			expectErr: fmt.Errorf("wrong version format 2019-02-11-preview"),
+			input:     "2019-02-11-preview",
 		},
 	}
 

@@ -19,7 +19,7 @@ package redhatopenshiftapi
 
 import (
     "context"
-    "go/src/github.com/jim-minter/rp/pkg/sdk//services/preview/redhatopenshift/mgmt/2019-12-31-preview/redhatopenshift"
+    "github.com/jim-minter/rp/pkg/sdk/services/preview/redhatopenshift/mgmt/2019-12-31-preview/redhatopenshift"
 )
 
         // OperationsClientAPI contains the set of methods on the OperationsClient type.

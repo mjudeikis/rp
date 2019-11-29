@@ -26,12 +26,14 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "go/src/github.com/jim-minter/rp/pkg/sdk//services/preview/redhatopenshift/mgmt/2019-12-31-preview/redhatopenshift"
+const fqdn = "github.com/jim-minter/rp/pkg/sdk/services/preview/redhatopenshift/mgmt/2019-12-31-preview/redhatopenshift"
 
         // ProvisioningState enumerates the values for provisioning state.
     type ProvisioningState string
 
     const (
+                // Creating ...
+        Creating ProvisioningState = "Creating"
                 // Deleting ...
         Deleting ProvisioningState = "Deleting"
                 // Failed ...
@@ -43,7 +45,7 @@ const fqdn = "go/src/github.com/jim-minter/rp/pkg/sdk//services/preview/redhatop
             )
     // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
     func PossibleProvisioningStateValues() []ProvisioningState {
-        return []ProvisioningState{Deleting,Failed,Succeeded,Updating}
+        return []ProvisioningState{Creating,Deleting,Failed,Succeeded,Updating}
     }
 
         // VMSize enumerates the values for vm size.
@@ -333,7 +335,7 @@ const fqdn = "go/src/github.com/jim-minter/rp/pkg/sdk//services/preview/redhatop
 
             // Properties properties represents an OpenShift cluster's properties.
             type Properties struct {
-            // ProvisioningState - The cluster provisioning state (immutable). Possible values include: 'Deleting', 'Failed', 'Succeeded', 'Updating'
+            // ProvisioningState - The cluster provisioning state (immutable). Possible values include: 'Creating', 'Deleting', 'Failed', 'Succeeded', 'Updating'
             ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
             // ServicePrincipalProfile - The cluster service principal profile.
             ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
