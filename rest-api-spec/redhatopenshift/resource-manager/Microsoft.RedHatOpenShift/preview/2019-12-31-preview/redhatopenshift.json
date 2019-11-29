@@ -42,6 +42,11 @@
               "$ref": "#/definitions/CloudError"
             }
           }
+        },
+        "x-ms-examples": {
+          "Lists all of the available RP operations.": {
+            "$ref": "./examples/Operations_List.json"
+          }
         }
       }
     },
@@ -73,6 +78,11 @@
             "schema": {
               "$ref": "#/definitions/CloudError"
             }
+          }
+        },
+        "x-ms-examples": {
+          "Lists OpenShift clusters in the specified subscription.": {
+            "$ref": "./examples/OpenShiftClusters_List.json"
           }
         }
       }
@@ -112,6 +122,11 @@
             "schema": {
               "$ref": "#/definitions/CloudError"
             }
+          }
+        },
+        "x-ms-examples": {
+          "Lists OpenShift clusters in the specified subscription and resource group.": {
+            "$ref": "./examples/OpenShiftClusters_ListByResourceGroup.json"
           }
         }
       }
@@ -158,6 +173,11 @@
             "schema": {
               "$ref": "#/definitions/CloudError"
             }
+          }
+        },
+        "x-ms-examples": {
+          "Gets a OpenShift cluster with the specified subscription, resource group and resource name.": {
+            "$ref": "./examples/OpenShiftClusters_Get.json"
           }
         }
       },
@@ -219,7 +239,12 @@
             }
           }
         },
-        "x-ms-long-running-operation": true
+        "x-ms-long-running-operation": true,
+        "x-ms-examples": {
+          "Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.": {
+            "$ref": "./examples/OpenShiftClusters_Create.json"
+          }
+        }
       },
       "delete": {
         "tags": [
@@ -264,7 +289,12 @@
             }
           }
         },
-        "x-ms-long-running-operation": true
+        "x-ms-long-running-operation": true,
+        "x-ms-examples": {
+          "Deletes a OpenShift cluster with the specified subscription, resource group and resource name.": {
+            "$ref": "./examples/OpenShiftClusters_Delete.json"
+          }
+        }
       },
       "patch": {
         "tags": [
@@ -324,7 +354,12 @@
             }
           }
         },
-        "x-ms-long-running-operation": true
+        "x-ms-long-running-operation": true,
+        "x-ms-examples": {
+          "Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.": {
+            "$ref": "./examples/OpenShiftClusters_Update.json"
+          }
+        }
       }
     },
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters/{resourceName}/credentials": {

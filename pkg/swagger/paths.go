@@ -1,6 +1,7 @@
 package swagger
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -91,11 +92,25 @@ func populateResponses(typ string, isDelete bool, statusCodes ...int) (responses
 	return
 }
 
+// populateExamples populates a examples block.
+// It will not validate if example file exist
+func populateExamples(operationID, summary string) (example map[string]map[string]string) {
+	exampleFile := fmt.Sprintf("./examples/%s.json", operationID)
+	example = map[string]map[string]string{
+		summary: map[string]string{
+			"$ref": exampleFile,
+		},
+	}
+
+	return example
+}
+
 // populateTopLevelPaths populates the paths for a top level ARM resource
 func populateTopLevelPaths(resourceProviderNamespace, resourceType, friendlyName string) (ps Paths) {
 	ps = Paths{}
 
-	ps["/subscriptions/{subscriptionId}/providers/"+resourceProviderNamespace+"/"+resourceType+"s"] = &PathItem{
+	// GET - List in subscription
+	pathItem := &PathItem{
 		Get: &Operation{
 			Tags:        []string{strings.Title(resourceType) + "s"},
 			Summary:     "Lists " + friendlyName + "s in the specified subscription.",
@@ -105,8 +120,11 @@ func populateTopLevelPaths(resourceProviderNamespace, resourceType, friendlyName
 			Responses:   populateResponses(strings.Title(resourceType)+"List", false, http.StatusOK),
 		},
 	}
+	pathItem.Get.Examples = populateExamples(pathItem.Get.OperationID, pathItem.Get.Summary)
+	ps["/subscriptions/{subscriptionId}/providers/"+resourceProviderNamespace+"/"+resourceType+"s"] = pathItem
 
-	ps["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/"+resourceProviderNamespace+"/"+resourceType+"s"] = &PathItem{
+	// GET - List in subscription and resourcegroup
+	pathItem = &PathItem{
 		Get: &Operation{
 			Tags:        []string{strings.Title(resourceType) + "s"},
 			Summary:     "Lists " + friendlyName + "s in the specified subscription and resource group.",
@@ -116,8 +134,11 @@ func populateTopLevelPaths(resourceProviderNamespace, resourceType, friendlyName
 			Responses:   populateResponses(strings.Title(resourceType)+"List", false, http.StatusOK),
 		},
 	}
+	pathItem.Get.Examples = populateExamples(pathItem.Get.OperationID, pathItem.Get.Summary)
+	ps["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/"+resourceProviderNamespace+"/"+resourceType+"s"] = pathItem
 
-	ps["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/"+resourceProviderNamespace+"/"+resourceType+"s/{resourceName}"] = &PathItem{
+	// All operations within subscription, resourceGroup, name
+	pathItem = &PathItem{
 		Get: &Operation{
 			Tags:        []string{strings.Title(resourceType) + "s"},
 			Summary:     "Gets a " + friendlyName + " with the specified subscription, resource group and resource name.",
@@ -154,6 +175,12 @@ func populateTopLevelPaths(resourceProviderNamespace, resourceType, friendlyName
 			LongRunningOperation: true,
 		},
 	}
+
+	pathItem.Get.Examples = populateExamples(pathItem.Get.OperationID, pathItem.Get.Summary)
+	pathItem.Put.Examples = populateExamples(pathItem.Put.OperationID, pathItem.Put.Summary)
+	pathItem.Delete.Examples = populateExamples(pathItem.Delete.OperationID, pathItem.Delete.Summary)
+	pathItem.Patch.Examples = populateExamples(pathItem.Patch.OperationID, pathItem.Patch.Summary)
+	ps["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/"+resourceProviderNamespace+"/"+resourceType+"s/{resourceName}"] = pathItem
 
 	return
 }
