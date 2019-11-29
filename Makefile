@@ -21,4 +21,12 @@ test:
 	go vet ./...
 	go test ./...
 
-.PHONY: rp clean image test
+generate-sdk:
+	podman run --privileged -it -v $GOPATH:/go --entrypoint autorest \
+    azuresdk/autorest /go/src/github.com/jim-minter/rp/rest-api-spec/redhatopenshift/resource-manager/readme.md \
+    --go --go-sdks-folder=/go/src/github.com/jim-minter/rp/pkg/sdk/ --multiapi \
+    --use=@microsoft.azure/autorest.go@~2.1.137 --use-onever --verbose
+
+.PHONY: clean generate-sdk image rp test
+
+

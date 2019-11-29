@@ -72,3 +72,7 @@ required = [
   [[prune.project]]
     name = "github.com/openshift/installer"
     unused-packages = false
+
+[[constraint]]
+  name = "github.com/stretchr/testify"
+  version = "1.4.0"
