@@ -7,3 +7,11 @@
 /id_rsa
 /rp
 /secrets
+/pyenv
+/az-cli/src/aro-preview/azext_aro_preview/__pycache__
+/az-cli/src/aro-preview/azext_aro_preview/*/*/__pycache__
+/az-cli/src/aro-preview/aro_preview.egg-info/*
+/az-cli/src/aro-preview/build
+/az-cli/src/aro-preview/dist
+*.pyc
+/.vscode/*
