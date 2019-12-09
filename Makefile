@@ -61,4 +61,14 @@ test: generate
 	go vet ./...
 	go test ./...
 
-.PHONY: rp clean client generate image secrets secrets-update test
+setup-py-env:
+	python3 -m venv pyenv
+
+setup-cli:
+	@[ -f "pyenv/bin/activate" ] || (echo error: python env is not found. Run "make setup-py-env"; exit 1)
+	( \
+       source pyenv/bin/activate; \
+	   az extension add --source $$(echo $$(pip install az-cli/src/aro-preview | grep "Stored in directory" | cut -d':' -f2-)/*) -y; \
+    )
+
+.PHONY: rp clean client generate image secrets secrets-update setup-cli setup-py-env test
