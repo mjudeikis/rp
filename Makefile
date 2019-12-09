@@ -66,6 +66,7 @@ setup-py-env:
 
 setup-cli:
 	@[ -f "pyenv/bin/activate" ] || (echo error: python env is not found. Run "make setup-py-env"; exit 1)
+	@[ ! -z "${BASE_URL}" ] || (echo info: BASE_URL is not set. Will use global ARM endpoint)
 	( \
        source pyenv/bin/activate; \
 	   az extension add --source $$(echo $$(pip install az-cli/src/aro-preview | grep "Stored in directory" | cut -d':' -f2-)/*) -y; \
