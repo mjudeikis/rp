@@ -62,14 +62,16 @@ test: generate
 	go test ./...
 
 setup-py-env:
-	python3 -m venv pyenv
+	python3 -m venv pyenv && source pyenv/bin/activate && pip install azdev
 
 setup-cli:
 	@[ -f "pyenv/bin/activate" ] || (echo error: python env is not found. Run "make setup-py-env"; exit 1)
 	@[ ! -z "${BASE_URL}" ] || (echo info: BASE_URL is not set. Will use global ARM endpoint)
 	( \
        source pyenv/bin/activate; \
-	   az extension add --source $$(echo $$(pip install az-cli/src/aro-preview | grep "Stored in directory" | cut -d':' -f2-)/*) -y; \
+	   cd az-cli/src/aro-preview/ && python ./setup.py bdist_wheel ; \
+	   az extension remove -n aro-preview ; \
+	   az extension add --source $$(echo dist/*) -y ; \
     )
 
 .PHONY: rp clean client generate image secrets secrets-update setup-cli setup-py-env test
