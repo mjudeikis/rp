@@ -2,107 +2,79 @@ package middleware
 
 import (
 	"bytes"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/gorilla/mux"
 )
 
 func TestBody(t *testing.T) {
-	assert := assert.New(t)
-
 	tests := []struct {
-		name   string
-		url    string
-		method string
-		header map[string]string
-
-		expectedCode int
+		name           string
+		url            string
+		method         string
+		header         http.Header
+		wantStatusCode int
 	}{
 		{
-			name:   "Get request - No checking",
-			url:    "/test",
-			method: "GET",
-
-			expectedCode: 200,
+			name:           "Get request - No checking",
+			method:         http.MethodGet,
+			wantStatusCode: http.StatusOK,
 		},
 		{
-			name:   "Post request - un-supported media type",
-			url:    "/test",
-			method: "POST",
-			header: map[string]string{
-				"Content-Type": "test",
+			name:   "Post request - unsupported media type",
+			method: http.MethodPost,
+			header: http.Header{
+				"Content-Type": []string{"test"},
 			},
-
-			expectedCode: 415,
+			wantStatusCode: http.StatusUnsupportedMediaType,
 		},
 		{
 			name:   "Post request - supported media type",
-			url:    "/test",
-			method: "POST",
-			header: map[string]string{
-				"Content-Type": "application/json",
+			method: http.MethodPut,
+			header: http.Header{
+				"Content-Type": []string{"application/json"},
 			},
-
-			expectedCode: 200,
+			wantStatusCode: http.StatusOK,
 		},
 		{
 			name:   "Put request - supported media type",
-			url:    "/test",
-			method: "PUT",
-			header: map[string]string{
-				"Content-Type": "application/json",
+			method: http.MethodPut,
+			header: http.Header{
+				"Content-Type": []string{"application/json"},
 			},
-
-			expectedCode: 200,
+			wantStatusCode: http.StatusOK,
 		},
 		{
 			name:   "Patch request - supported media type",
-			url:    "/test",
-			method: "PATCH",
-			header: map[string]string{
-				"Content-Type": "application/json",
+			method: http.MethodPatch,
+			header: http.Header{
+				"Content-Type": []string{"application/json"},
 			},
-
-			expectedCode: 200,
+			wantStatusCode: http.StatusOK,
 		},
 	}
 
-	ts := httptest.NewServer(Body(GetTestHandler()))
-	defer ts.Close()
-	client := http.Client{}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			var u bytes.Buffer
-			u.WriteString(string(ts.URL))
-			u.WriteString(test.url)
+			w := httptest.NewRecorder()
+			r := mux.NewRouter()
+			path := "/test"
 
-			req, err := http.NewRequest(test.method, u.String(), bytes.NewBuffer([]byte("")))
-			assert.NoError(err)
+			GetTestHandler().AddRoute(r, path, test.method)
+			r.Use(Body)
 
-			headers := http.Header{}
-			for n, h := range test.header {
-				headers.Set(n, h)
+			req := httptest.NewRequest(test.method, path, bytes.NewBuffer([]byte("")))
+
+			req.Header = test.header
+
+			r.ServeHTTP(w, req)
+
+			if test.wantStatusCode != w.Code {
+				t.Errorf("test %s failed %d != %d", test.name, test.wantStatusCode, w.Code)
 			}
-			req.Header = headers
-
-			res, err := client.Do(req)
-			assert.NoError(err)
-
-			_, err = ioutil.ReadAll(res.Body)
-			assert.NoError(err)
-			assert.Equal(test.expectedCode, res.StatusCode)
 		})
 
 	}
-}
-
-func GetTestHandler() http.HandlerFunc {
-	fn := func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte("ack"))
-	}
-	return http.HandlerFunc(fn)
 }
