@@ -23,3 +23,11 @@ jobs:
         set -x
         make test
         [[ -z "$(git status -s)" ]]
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.txt
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false

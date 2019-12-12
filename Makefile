@@ -59,6 +59,9 @@ test: generate
 	@sha256sum --quiet -c .sha256sum || (echo error: client library is stale, please run make client; exit 1)
 
 	go vet ./...
-	go test ./...
+	go test ./... -coverprofile=coverage.txt -covermode=atomic
+
+view-test: test
+	go tool cover -html=coverage.txt
 
 .PHONY: rp clean client generate image secrets secrets-update test
