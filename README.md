@@ -1,6 +1,6 @@
 # github.com/jim-minter/rp
 
-[![codecov](https://codecov.io/gh/jim-minter/ro/branch/master/graph/badge.svg)(https://codecov.io/gh/jim-minter/rp)
+[![codecov](https://codecov.io/gh/jim-minter/ro/branch/master/graph/badge.svg)](https://codecov.io/gh/mjudeikis/rp)
 
 ## Install
 
