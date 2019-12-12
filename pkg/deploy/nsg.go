@@ -51,7 +51,10 @@ func GenerateNSGTemplate() error {
 			},
 		},
 		Outputs: map[string]interface{}{
-			"rpServicePrincipalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'rp-identity'), '2018-11-30').principalId]",
+			"rpServicePrincipalId": map[string]string{
+				"type":  "string",
+				"value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'rp-identity'), '2018-11-30').principalId]",
+			},
 		},
 	}
 

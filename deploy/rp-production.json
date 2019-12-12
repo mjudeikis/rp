@@ -12,7 +12,8 @@
                     ]
                 }
             }
-        ]
+        ],
+        "storageAccountName": "[concat('store', uniquestring(resourceGroup().id))]"
     },
     "parameters": {
         "databaseAccountName": {
@@ -233,6 +234,12 @@
                             }
                         ]
                     },
+                    "diagnosticsProfile": {
+                        "bootDiagnostics": {
+                            "enabled": true,
+                            "storageUri": "[concat('https://', variables('storageAccountName'),'.blob.core.windows.net')]"
+                        }
+                    },
                     "extensionProfile": {
                         "extensions": [
                             {
@@ -265,8 +272,21 @@
             "apiVersion": "2019-03-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/virtualNetworks', 'rp-vnet')]",
-                "[resourceId('Microsoft.Network/loadBalancers', 'rp-lb')]"
+                "[resourceId('Microsoft.Network/loadBalancers', 'rp-lb')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
             ]
+        },
+        {
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage",
+            "properties": {
+                "supportsHttpsTrafficOnly": true
+            },
+            "location": "[resourceGroup().location]",
+            "name": "[variables('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts"
         },
         {
             "properties": {},

@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2016-10-01/keyvault"
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-07-01/network"
 	"github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization"
+	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-04-01/storage"
 	"github.com/Azure/go-autorest/autorest/to"
 	uuid "github.com/satori/go.uuid"
 
@@ -322,6 +323,12 @@ systemctl enable arorp.service
 						},
 					},
 				},
+				DiagnosticsProfile: &compute.DiagnosticsProfile{
+					BootDiagnostics: &compute.BootDiagnostics{
+						Enabled:    to.BoolPtr(true),
+						StorageURI: to.StringPtr("[concat('https://', variables('storageAccountName'),'.blob.core.windows.net')]"),
+					},
+				},
 				ExtensionProfile: &compute.VirtualMachineScaleSetExtensionProfile{
 					Extensions: &[]compute.VirtualMachineScaleSetExtension{
 						{
@@ -359,6 +366,24 @@ systemctl enable arorp.service
 		DependsOn: []string{
 			"[resourceId('Microsoft.Network/virtualNetworks', 'rp-vnet')]",
 			"[resourceId('Microsoft.Network/loadBalancers', 'rp-lb')]",
+			"[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+		},
+	}
+}
+
+func (g *generator) storageAccount() *arm.Resource {
+	return &arm.Resource{
+		Resource: &storage.Account{
+			Sku: &storage.Sku{
+				Name: storage.StandardLRS,
+			},
+			Kind:     storage.Storage,
+			Name:     to.StringPtr("[variables('storageAccountName')]"),
+			Type:     to.StringPtr("Microsoft.Storage/storageAccounts"),
+			Location: to.StringPtr("[resourceGroup().location]"),
+			AccountProperties: &storage.AccountProperties{
+				EnableHTTPSTrafficOnly: to.BoolPtr(true),
+			},
 		},
 	}
 }
@@ -621,6 +646,7 @@ func (g *generator) template() *arm.Template {
 			"keyvaultAccessPolicies": []keyvault.AccessPolicyEntry{
 				g.accessPolicyEntry(),
 			},
+			"storageAccountName": "[concat('store', uniquestring(resourceGroup().id))]",
 		}
 	}
 
@@ -652,7 +678,7 @@ func (g *generator) template() *arm.Template {
 	}
 
 	if g.production {
-		t.Resources = append(t.Resources, g.vnet(), g.pip(), g.lb(), g.vmss())
+		t.Resources = append(t.Resources, g.vnet(), g.pip(), g.lb(), g.vmss(), g.storageAccount())
 	}
 	t.Resources = append(t.Resources, g.zone(), g.vault())
 	t.Resources = append(t.Resources, g.cosmosdb()...)
