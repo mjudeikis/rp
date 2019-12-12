@@ -90,6 +90,27 @@
 
    * PULL_SECRET:                   A cluster pull secret retrieved from [Red Hat OpenShift Cluster Manager](https://cloud.redhat.com/openshift/install/azure/installer-provisioned)
 
+   Credentials explained:
+   `AZURE_CLUSTER_CLIENT_*` - Cluster credentials, provided by user and used by
+   cluster components itself. If provided with access `Application.ReadWrite.OwnedBy`,
+   it will be used to create other credentials my Credentials-Minter operator.
+   Otherwise it will force Credentials-Minter to passthrough mode and same credentials
+   will be used across the cluster.
+
+  `AZURE_ARM_CLIENT_*` - Development only credentials. In the production RP sends
+  a create ResourceGroup request to ARM with the ManagedBy flag, ARM validates
+  against the subscription level role definition, then creates the ResourceGroup and
+  assigns predefined role to it. This credentials is used to mimic this behaviour in
+  development flow.
+
+  `AZURE_FP_CLIENT_ID`- First Party client ID. Credentials are stored in keyvault.
+  This is main account, allowing RP to create resources in other subscriptions.
+
+  `AZURE_CLIENT_ID`- ResourceProvider credentials. These are coming from the ManagedIdentity,
+  where ResourceProvider is running. It is being used to retrieve FirstParty credentials
+  from keyvault and modify DNS records for the cluster RP manages.
+
+
    ```
    cp env.example env
    vi env
