@@ -61,4 +61,7 @@ test: generate
 	go vet ./...
 	go test ./... -coverprofile=coverage.txt -covermode=atomic
 
+view-test: test
+	go tool cover -html=coverage.txt
+
 .PHONY: rp clean client generate image secrets secrets-update test

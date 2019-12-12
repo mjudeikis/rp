@@ -1,5 +1,7 @@
 # github.com/jim-minter/rp
 
+[![codec=ov](https://codecov.io/gh/jim-minter/ro/branch/master/graph/badge.svg)](https://codecov.io/gh/jim-minter/rp)"
+
 ## Install
 
 1. Install the following:
