@@ -54,6 +54,7 @@ var (
 	CloudErrorCodeInvalidLinkedVNet                  = "InvalidLinkedVNet"
 	CloudErrorCodeNotFound                           = "NotFound"
 	CloudErrorCodeForbidden                          = "Forbidden"
+	CloudErrorCodeConflict                           = "Conflict"
 	CloudErrorCodeInvalidSubscriptionState           = "CloudErrorCodeInvalidSubscriptionState"
 	CloudErrorCodeInvalidServicePrincipalCredentials = "InvalidServicePrincipalCredentials"
 	CloudErrorCodeInvalidResourceProviderPermissions = "InvalidResourceProviderPermissions"

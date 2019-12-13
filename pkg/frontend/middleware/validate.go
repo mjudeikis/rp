@@ -57,6 +57,11 @@ func Validate(h http.Handler) http.Handler {
 				api.WriteError(w, http.StatusNotFound, api.CloudErrorCodeResourceNotFound, "", "The Resource '%s/%s/%s' under resource group '%s' was not found.", vars["resourceProviderNamespace"], vars["resourceType"], vars["resourceName"], vars["resourceGroupName"])
 				return
 			}
+
+			if vars["resourceName"] == vars["resourceGroupName"] {
+				api.WriteError(w, http.StatusConflict, api.CloudErrorCodeConflict, "", "The Resource name '%s' and resource group name '%s' must be unique.", vars["resourceName"], vars["resourceGroupName"])
+				return
+			}
 		}
 
 		queries, err := route.GetQueriesTemplates()
