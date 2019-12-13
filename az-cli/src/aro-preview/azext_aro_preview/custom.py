@@ -5,6 +5,7 @@
 
 import time
 import uuid
+import os
 
 from knack.util import CLIError
 from knack.log import get_logger
@@ -44,6 +45,12 @@ def aro_preview_create(cmd, client, resource_group_name, resource_name,
                        vnet_master_subnet_name=None,
                        tags=None,
                        no_wait=False):
+
+    # development only. Overrides FP clientID
+    provider_client_id = FP_CLIENT_ID
+    if os.environ.get('RP_MODE') is not None and os.environ['RP_MODE'] == "development":
+        provider_client_id=os.environ.get('AZURE_FP_CLIENT_ID', FP_CLIENT_ID)
+
     subscription_id = get_subscription_id(cmd.cli_ctx)
 
     # if rg with cluster name does not exist
@@ -58,7 +65,8 @@ def aro_preview_create(cmd, client, resource_group_name, resource_name,
                                           resource_group_name + "-vnet",
                                           subscription_id,
                                           location,
-                                          client_id):
+                                          client_id,
+                                          provider_client_id):
             raise CLIError('Count not create VNET resource group'
                            'Are you an Owner on this subscription?')
 
@@ -181,6 +189,7 @@ def _create_vnet_resourcegroup(cli_ctx, cluster_name, resource_group_name,
                                subscription_id,
                                location,
                                cluster_client_id,
+                               provider_client_id,
                                delay=2):
 
     if not _create_resourcegroup(cli_ctx, resource_group_name, subscription_id, location, delay):
@@ -190,7 +199,7 @@ def _create_vnet_resourcegroup(cli_ctx, cluster_name, resource_group_name,
                         subscription_id, location):
         return False
 
-    if not _add_role_assignment(cli_ctx, "ARO v4 Development Subnet Contributor", FP_CLIENT_ID, delay,
+    if not _add_role_assignment(cli_ctx, "ARO v4 Development Subnet Contributor", provider_client_id, delay,
                                 "/subscriptions/{}/resourceGroups/{}/providers/Microsoft.Network/virtualNetworks/vnet".format(subscription_id, resource_group_name)): # pylint: disable=line-too-long
         return False
 
@@ -249,7 +258,6 @@ def _create_vnet(cli_ctx, resource_group_name, resource_name, address_prefix,
 
             # Create subnets for masters and workers
             # TODO: Make these separate function and configurable
-            print("vnet create")
             subnet_client = cf_network_virtual_networks_subnets(cli_ctx, subscription_id)
             async_subnet_creation = subnet_client.create_or_update(
                 resource_group_name,
@@ -348,7 +356,6 @@ def _resolve_role_id(role, scope, definitions_client):
         pass
     if not role_id:  # retrieve role id
         role_defs = list(definitions_client.list(scope, "roleName eq '{}'".format(role)))
-        print(role_defs)
         if not role_defs:
             raise CLIError("Role '{}' doesn't exist.".format(role))
         if len(role_defs) > 1:
